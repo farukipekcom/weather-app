@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to WEather App 👋</h1>
+<h1 align="center">Welcome to Weather App 👋</h1>
 
 You can see the 7-day weather forecast for cities in Turkey.
 
