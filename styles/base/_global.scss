@@ -1,0 +1,108 @@
+body {
+  color: black;
+  background-color: rgb(233, 233, 233);
+}
+.main {
+  width: 1280px;
+  height: 100vh;
+  display: flex;
+  margin: 0 auto;
+  &-left {
+    width: 900px;
+    background-color: #fafafa;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    &-header {
+      width: 100%;
+      height: 100px;
+      display: flex;
+      justify-content: space-between;
+      &-left {
+        &-date {
+          font-weight: 600;
+          font-size: 24px;
+          line-height: 29px;
+        }
+        &-city {
+          margin-top: 12px;
+          font-weight: 600;
+          font-size: 24px;
+          line-height: 29px;
+        }
+        &-country {
+          margin-top: 4px;
+          font-weight: 400;
+          font-size: 16px;
+          line-height: 19px;
+        }
+      }
+      &-right {
+        &-time {
+          font-weight: 600;
+          font-size: 32px;
+          line-height: 39px;
+        }
+      }
+    }
+    &-center {
+      position: relative;
+      margin-bottom: 28px;
+      &-degree {
+        font-weight: 700;
+        font-size: 200px;
+        line-height: 242px;
+      }
+      &-mark {
+        position: absolute;
+        top: -64px;
+        right: -84px;
+        font-weight: 700;
+        font-size: 200px;
+        line-height: 242px;
+      }
+    }
+    &-footer {
+      height: 72px;
+      width: 100%;
+      &-list {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        &-item {
+          background: rgba(95, 95, 95, 0.1);
+          width: 190px;
+          height: 72px;
+          display: flex;
+          align-items: center;
+          padding: 16px;
+          border-radius: 4px;
+          &-icon {
+          }
+          &-details {
+            display: flex;
+            flex-direction: column;
+            margin-left: 16px;
+            gap: 6px;
+            &-heading {
+              font-weight: 500;
+              font-size: 14px;
+              line-height: 17px;
+            }
+            &-value {
+              font-weight: 600;
+              font-size: 16px;
+              line-height: 19px;
+            }
+          }
+        }
+      }
+    }
+  }
+  &-right {
+    width: 380px;
+    background-color: #fff;
+  }
+}
