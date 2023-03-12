@@ -53,7 +53,113 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="main-right"></div>
+      <div className="main-right">
+        <div className="main-right-today">
+          <div className="main-right-today-heading">Today</div>
+          <div className="main-right-today-hours">
+            <div className="main-right-today-hours-hour">
+              <div className="main-right-today-hours-hour-time">3 PM</div>
+              <div className="main-right-today-hours-hour-icon">
+                <img src="sun.svg" alt="Sun" />
+              </div>
+              <div className="main-right-today-hours-hour-degree">24°</div>
+            </div>
+            <div className="main-right-today-hours-hour">
+              <div className="main-right-today-hours-hour-time">3 PM</div>
+              <div className="main-right-today-hours-hour-icon">
+                <img src="sun.svg" alt="Sun" />
+              </div>
+              <div className="main-right-today-hours-hour-degree">24°</div>
+            </div>
+            <div className="main-right-today-hours-hour">
+              <div className="main-right-today-hours-hour-time">3 PM</div>
+              <div className="main-right-today-hours-hour-icon">
+                <img src="sun.svg" alt="Sun" />
+              </div>
+              <div className="main-right-today-hours-hour-degree">24°</div>
+            </div>
+            <div className="main-right-today-hours-hour">
+              <div className="main-right-today-hours-hour-time">3 PM</div>
+              <div className="main-right-today-hours-hour-icon">
+                <img src="sun.svg" alt="Sun" />
+              </div>
+              <div className="main-right-today-hours-hour-degree">24°</div>
+            </div>
+          </div>
+        </div>
+        <div className="main-right-week">
+          <div className="main-right-week-day">
+            <div className="main-right-week-day-details">
+              <div className="main-right-week-day-details-day">Sunday</div>
+              <div className="main-right-week-day-details-date">25 July</div>
+            </div>
+            <div className="main-right-week-day-degree">12° / 24°</div>
+            <div className="main-right-week-day-icon">
+              <img src="sun.svg" alt="Sun" />
+            </div>
+          </div>
+          <div className="main-right-week-day">
+            <div className="main-right-week-day-details">
+              <div className="main-right-week-day-details-day">Monday</div>
+              <div className="main-right-week-day-details-date">26 July</div>
+            </div>
+            <div className="main-right-week-day-degree">18° / 29°</div>
+            <div className="main-right-week-day-icon">
+              <img src="sun.svg" alt="Sun" />
+            </div>
+          </div>
+          <div className="main-right-week-day">
+            <div className="main-right-week-day-details">
+              <div className="main-right-week-day-details-day">Tuesday</div>
+              <div className="main-right-week-day-details-date">27 July</div>
+            </div>
+            <div className="main-right-week-day-degree">16° / 28°</div>
+            <div className="main-right-week-day-icon">
+              <img src="sun.svg" alt="Sun" />
+            </div>
+          </div>
+          <div className="main-right-week-day">
+            <div className="main-right-week-day-details">
+              <div className="main-right-week-day-details-day">Wednesday</div>
+              <div className="main-right-week-day-details-date">28 July</div>
+            </div>
+            <div className="main-right-week-day-degree">14° / 22°</div>
+            <div className="main-right-week-day-icon">
+              <img src="sun.svg" alt="Sun" />
+            </div>
+          </div>
+          <div className="main-right-week-day">
+            <div className="main-right-week-day-details">
+              <div className="main-right-week-day-details-day">Thursday</div>
+              <div className="main-right-week-day-details-date">29 July</div>
+            </div>
+            <div className="main-right-week-day-degree">21° / 34°</div>
+            <div className="main-right-week-day-icon">
+              <img src="sun.svg" alt="Sun" />
+            </div>
+          </div>
+        </div>
+        <div className="main-right-sun">
+          <div className="main-right-sun-heading">Sunrise & Sunset</div>
+          <div className="main-right-sun-list">
+            <div className="main-right-sun-item sunrise">
+              <div className="main-right-sun-item-icon">
+                <img src="sunrise.svg" alt="Sunrise" /></div>
+              <div className="main-right-sun-item-details">
+                <div className="main-right-sun-item-details-heading">Sunrise</div>
+                <div className="main-right-sun-item-details-value">4:20 AM</div>
+              </div>
+            </div>
+            <div className="main-right-sun-item sunset">
+              <div className="main-right-sun-item-icon">
+                <img src="sunset.svg" alt="Sunset" /></div>
+              <div className="main-right-sun-item-details">
+                <div className="main-right-sun-item-details-heading">Sunset</div>
+                <div className="main-right-sun-item-details-value">4:20 AM</div>
+              </div>
+            </div></div>
+        </div>
+      </div>
     </div>
   );
 }
