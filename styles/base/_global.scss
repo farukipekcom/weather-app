@@ -115,6 +115,7 @@ body {
         margin-top: 16px;
         display: flex;
         justify-content: space-between;
+
         &-hour {
           display: flex;
           width: 100%;
@@ -124,10 +125,10 @@ body {
           border-radius: 12px;
           padding: 12px;
           &:first-child {
-            background-color: #f7f7f7;
-          }
-          & + & {
-            margin-left: 12px;
+            background-color: #F7F7F7;
+            & + & {
+              margin-left: 12px;
+            }
           }
           &-time {
             color: #616161;
