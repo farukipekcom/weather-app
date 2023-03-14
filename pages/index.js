@@ -1,20 +1,59 @@
-import format from 'date-fns/format'
-import Moment from 'react-moment';
-import {useEffect, useState} from 'react';
+import format from "date-fns/format";
+import Moment from "react-moment";
+import { useEffect, useState } from "react";
 export default function Home({ data }) {
-  const date = format(new Date(data.location.localtime), 'MMMM dd, yyyy');
-  const time = format(new Date(data.location.localtime), 'HH:mm a');
-  const currentHour = Number.parseInt(format(new Date(data.location.localtime), 'H'));
-  const yeni = data.forecast.forecastday[0].hour.slice(currentHour + 1, currentHour + 5);
-  const [hourWeather,setHourWeather] = useState([]);
-  const [isLoading,setIsLoading] = useState(false);
+  console.log(data);
+  console.log("https:" + data.forecast.forecastday[0].hour[0].condition.icon);
+  const date = format(new Date(data.location.localtime), "MMMM dd, yyyy");
+  const time = format(new Date(data.location.localtime), "HH:mm a");
+  const currentHour = Number.parseInt(
+    format(new Date(data.location.localtime), "H")
+  );
+  const yeni = data.forecast.forecastday[0].hour.slice(
+    currentHour + 1,
+    currentHour + 5
+  );
+  const [hourWeather, setHourWeather] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const condition = (value) => {
+    return value === 1000 ? ("/sunny.svg") :
+      value === 1003 ? ("/partly-cloud.svg") :
+        value === 1006 ? ("/cloudy.svg") :
+          value === 1009 ? ("/overcast.svg") :
+            value === 1030 ? ("/mist.svg") :
+            value === 1063 ? ("/patchy-rain-possible.svg") :
+            value === 1150 ? ("/patchy-light-drizzle.svg") :
+              value === 1183 ? ("/light-rain.svg") :
+              value === 1189 ? ("/moderate-rain.svg") :
+              value === 1195 ? ("/heavy-rain.svg") :
+                  "/soon.svg"
+  }
   useEffect(() => {
-    { yeni.length === 4 ? 
-      setHourWeather([...yeni]) : yeni.length === 3 ? 
-      setHourWeather([...yeni, ...data.forecast.forecastday[1].hour.slice(0, 1)]) : yeni.length === 2 ? 
-      setHourWeather([...yeni, ...data.forecast.forecastday[1].hour.slice(0, 2)]) : yeni.length === 1 ? 
-      setHourWeather([...yeni, ...data.forecast.forecastday[1].hour.slice(0, 3)]) : yeni.length === 0 ? 
-      setHourWeather([...yeni, ...data.forecast.forecastday[1].hour.slice(0, 4)]) : "" }
+    {
+      yeni.length === 4
+        ? setHourWeather([...yeni])
+        : yeni.length === 3
+          ? setHourWeather([
+            ...yeni,
+            ...data.forecast.forecastday[1].hour.slice(0, 1),
+          ])
+          : yeni.length === 2
+            ? setHourWeather([
+              ...yeni,
+              ...data.forecast.forecastday[1].hour.slice(0, 2),
+            ])
+            : yeni.length === 1
+              ? setHourWeather([
+                ...yeni,
+                ...data.forecast.forecastday[1].hour.slice(0, 3),
+              ])
+              : yeni.length === 0
+                ? setHourWeather([
+                  ...yeni,
+                  ...data.forecast.forecastday[1].hour.slice(0, 4),
+                ])
+                : "";
+    }
     setIsLoading(true);
   }, []);
   return (
@@ -23,8 +62,12 @@ export default function Home({ data }) {
         <div className="main-left-header">
           <div className="main-left-header-left">
             <div className="main-left-header-left-date">{date}</div>
-            <div className="main-left-header-left-city">{data.location.name}</div>
-            <div className="main-left-header-left-country">{data.location.country}</div>
+            <div className="main-left-header-left-city">
+              {data.location.name}
+            </div>
+            <div className="main-left-header-left-country">
+              {data.location.region === data.location.name ? "" : data.location.region + ", "}{data.location.country}
+            </div>
           </div>
           <div className="main-left-header-right">
             <div className="main-left-header-right-time">{time}</div>
@@ -38,34 +81,54 @@ export default function Home({ data }) {
           <div className="main-left-footer-list">
             <div className="main-left-footer-list-item">
               <div className="main-left-footer-list-item-icon">
-                <img src="wind.svg" alt="Wind" /></div>
+                <img src="wind.svg" alt="Wind" />
+              </div>
               <div className="main-left-footer-list-item-details">
-                <div className="main-left-footer-list-item-details-heading">Wind</div>
-                <div className="main-left-footer-list-item-details-value">{data.current.wind_kph} km/h</div>
+                <div className="main-left-footer-list-item-details-heading">
+                  Wind
+                </div>
+                <div className="main-left-footer-list-item-details-value">
+                  {data.current.wind_kph} km/h
+                </div>
               </div>
             </div>
             <div className="main-left-footer-list-item">
               <div className="main-left-footer-list-item-icon">
-                <img src="humidity.svg" alt="Humidity" /></div>
+                <img src="humidity.svg" alt="Humidity" />
+              </div>
               <div className="main-left-footer-list-item-details">
-                <div className="main-left-footer-list-item-details-heading">Humidity</div>
-                <div className="main-left-footer-list-item-details-value">{data.current.humidity} %</div>
+                <div className="main-left-footer-list-item-details-heading">
+                  Humidity
+                </div>
+                <div className="main-left-footer-list-item-details-value">
+                  {data.current.humidity} %
+                </div>
               </div>
             </div>
             <div className="main-left-footer-list-item">
               <div className="main-left-footer-list-item-icon">
-                <img src="rain.svg" alt="Humidity" /></div>
+                <img src="rain.svg" alt="Humidity" />
+              </div>
               <div className="main-left-footer-list-item-details">
-                <div className="main-left-footer-list-item-details-heading">Rain Chance</div>
-                <div className="main-left-footer-list-item-details-value">{data.forecast.forecastday[0].day.daily_chance_of_rain} %</div>
+                <div className="main-left-footer-list-item-details-heading">
+                  Rain Chance
+                </div>
+                <div className="main-left-footer-list-item-details-value">
+                  {data.forecast.forecastday[0].day.daily_chance_of_rain} %
+                </div>
               </div>
             </div>
             <div className="main-left-footer-list-item">
               <div className="main-left-footer-list-item-icon">
-                <img src="uv.svg" alt="Humidity" /></div>
+                <img src="uv.svg" alt="Humidity" />
+              </div>
               <div className="main-left-footer-list-item-details">
-                <div className="main-left-footer-list-item-details-heading">UV Index</div>
-                <div className="main-left-footer-list-item-details-value">{data.current.uv}</div>
+                <div className="main-left-footer-list-item-details-heading">
+                  UV Index
+                </div>
+                <div className="main-left-footer-list-item-details-value">
+                  {data.current.uv}
+                </div>
               </div>
             </div>
           </div>
@@ -75,40 +138,48 @@ export default function Home({ data }) {
         <div className="main-right-today">
           <div className="main-right-today-heading">Today</div>
           <div className="main-right-today-hours">
-            {isLoading && hourWeather.map((item, index) => {
-              return <div className="main-right-today-hours-hour" key={index}>
-              <div className="main-right-today-hours-hour-time">
-                <Moment format="h A">
-                  {item.time}
-                </Moment></div>
-              <div className="main-right-today-hours-hour-icon">
-                <img src="sun.svg" alt="Sun" />
-              </div>
-              <div className="main-right-today-hours-hour-degree">{item.temp_c}°</div>
-            </div>
-            })}
+            {isLoading &&
+              hourWeather.map((item, index) => {
+                return (
+                  <div className="main-right-today-hours-hour" key={index}>
+                    <div className="main-right-today-hours-hour-time">
+                      <Moment format="h A">{item.time}</Moment>
+                    </div>
+                    <div className="main-right-today-hours-hour-icon">
+                      <img src={condition(item.condition.code)} alt={item.condition.text} title={item.condition.text}  />
+                    </div>
+                    <div className="main-right-today-hours-hour-degree">
+                      {item.temp_c}°
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </div>
         <div className="main-right-week">
           {data.forecast.forecastday.map((item, index) => {
-            return <div key={index}>
-              <div className="main-right-week-day" key={index}>
-                <div className="main-right-week-day-details">
-                  <div className="main-right-week-day-details-day">
-                    <Moment format="dddd">
-                      {item.date}
-                    </Moment>
+            console.log(index + " ... " + item.day.condition.code)
+            return (
+              <div key={index}>
+                <div className="main-right-week-day" key={index}>
+                  <div className="main-right-week-day-details">
+                    <div className="main-right-week-day-details-day">
+                      <Moment format="dddd">{item.date}</Moment>
+                    </div>
+                    <div className="main-right-week-day-details-date">
+                      <Moment format="MMMM DD">{item.date}</Moment>
+                    </div>
                   </div>
-                  <div className="main-right-week-day-details-date"><Moment format="MMMM DD">
-                    {item.date}
-                  </Moment></div>
-                </div>
-                <div className="main-right-week-day-degree">{Number.parseInt(item.day.mintemp_c)}° / {Number.parseInt(item.day.maxtemp_c)}°</div>
-                <div className="main-right-week-day-icon">
-                  <img src="sun.svg" alt="Sun" />
+                  <div className="main-right-week-day-degree">
+                    {Number.parseInt(item.day.mintemp_c)}° /{" "}
+                    {Number.parseInt(item.day.maxtemp_c)}°
+                  </div>
+                  <div className="main-right-week-day-icon">
+                    <img src={condition(item.day.condition.code)} alt={item.day.condition.text}  title={item.day.condition.text} />
+                  </div>
                 </div>
               </div>
-            </div>
+            );
           })}
         </div>
         <div className="main-right-sun">
@@ -116,31 +187,44 @@ export default function Home({ data }) {
           <div className="main-right-sun-list">
             <div className="main-right-sun-item sunrise">
               <div className="main-right-sun-item-icon">
-                <img src="sunrise.svg" alt="Sunrise" /></div>
+                <img src="sunrise.svg" alt="Sunrise" />
+              </div>
               <div className="main-right-sun-item-details">
-                <div className="main-right-sun-item-details-heading">Sunrise</div>
-                <div className="main-right-sun-item-details-value">4:20 AM</div>
+                <div className="main-right-sun-item-details-heading">
+                  Sunrise
+                </div>
+                <div className="main-right-sun-item-details-value">
+                  {data.forecast.forecastday[1].astro.sunrise}
+                </div>
               </div>
             </div>
             <div className="main-right-sun-item sunset">
               <div className="main-right-sun-item-icon">
-                <img src="sunset.svg" alt="Sunset" /></div>
-              <div className="main-right-sun-item-details">
-                <div className="main-right-sun-item-details-heading">Sunset</div>
-                <div className="main-right-sun-item-details-value">4:20 AM</div>
+                <img src="sunset.svg" alt="Sunset" />
               </div>
-            </div></div>
+              <div className="main-right-sun-item-details">
+                <div className="main-right-sun-item-details-heading">
+                  Sunset
+                </div>
+                <div className="main-right-sun-item-details-value">
+                  {data.forecast.forecastday[1].astro.sunset}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 export async function getStaticProps() {
-  const res = await fetch(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=istanbul&days=5&aqi=no&alerts=no`)
-  const data = await res.json()
+  const res = await fetch(
+    `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=charlotte&days=5&aqi=no&alerts=no`
+  );
+  const data = await res.json();
   return {
     props: {
       data,
     },
-  }
+  };
 }
