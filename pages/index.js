@@ -1,8 +1,8 @@
 import format from "date-fns/format";
 import Moment from "react-moment";
 import { useEffect, useState } from "react";
-import { condition } from "./components/condition";
-import { daily } from './components/daily';
+import condition from "./components/condition";
+import hourly from './components/hourly';
 export default function Home({ data }) {
   // console.log(data);
   const date = format(new Date(data.location.localtime), "MMMM dd, yyyy");
@@ -17,7 +17,7 @@ export default function Home({ data }) {
   const [hourWeather, setHourWeather] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    daily({dailyCondition,setHourWeather });
+    hourly(dailyCondition,setHourWeather);
     setIsLoading(true);
   }, []);
   return (

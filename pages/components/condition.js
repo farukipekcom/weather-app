@@ -97,3 +97,4 @@ export const condition = (value) => {
     ? "/condition-icons/Moderate-or-heavy-snow-with-thunder.svg"
     : "/condition-icons/soon.svg";
 };
+export default condition
