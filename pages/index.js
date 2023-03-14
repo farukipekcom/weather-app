@@ -1,59 +1,23 @@
 import format from "date-fns/format";
 import Moment from "react-moment";
 import { useEffect, useState } from "react";
+import { condition } from "./components/condition";
+import { daily } from './components/daily';
 export default function Home({ data }) {
-  console.log(data);
-  console.log("https:" + data.forecast.forecastday[0].hour[0].condition.icon);
+  // console.log(data);
   const date = format(new Date(data.location.localtime), "MMMM dd, yyyy");
   const time = format(new Date(data.location.localtime), "HH:mm a");
   const currentHour = Number.parseInt(
     format(new Date(data.location.localtime), "H")
   );
-  const yeni = data.forecast.forecastday[0].hour.slice(
+  const dailyCondition = data.forecast.forecastday[0].hour.slice(
     currentHour + 1,
     currentHour + 5
   );
   const [hourWeather, setHourWeather] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const condition = (value) => {
-    return value === 1000 ? ("/sunny.svg") :
-      value === 1003 ? ("/partly-cloud.svg") :
-        value === 1006 ? ("/cloudy.svg") :
-          value === 1009 ? ("/overcast.svg") :
-            value === 1030 ? ("/mist.svg") :
-            value === 1063 ? ("/patchy-rain-possible.svg") :
-            value === 1150 ? ("/patchy-light-drizzle.svg") :
-              value === 1183 ? ("/light-rain.svg") :
-              value === 1189 ? ("/moderate-rain.svg") :
-              value === 1195 ? ("/heavy-rain.svg") :
-                  "/soon.svg"
-  }
   useEffect(() => {
-    {
-      yeni.length === 4
-        ? setHourWeather([...yeni])
-        : yeni.length === 3
-          ? setHourWeather([
-            ...yeni,
-            ...data.forecast.forecastday[1].hour.slice(0, 1),
-          ])
-          : yeni.length === 2
-            ? setHourWeather([
-              ...yeni,
-              ...data.forecast.forecastday[1].hour.slice(0, 2),
-            ])
-            : yeni.length === 1
-              ? setHourWeather([
-                ...yeni,
-                ...data.forecast.forecastday[1].hour.slice(0, 3),
-              ])
-              : yeni.length === 0
-                ? setHourWeather([
-                  ...yeni,
-                  ...data.forecast.forecastday[1].hour.slice(0, 4),
-                ])
-                : "";
-    }
+    daily({dailyCondition,setHourWeather });
     setIsLoading(true);
   }, []);
   return (
@@ -149,7 +113,7 @@ export default function Home({ data }) {
                       <img src={condition(item.condition.code)} alt={item.condition.text} title={item.condition.text}  />
                     </div>
                     <div className="main-right-today-hours-hour-degree">
-                      {item.temp_c}°
+                      {Number.parseInt(item.temp_c)}°
                     </div>
                   </div>
                 );
@@ -158,7 +122,6 @@ export default function Home({ data }) {
         </div>
         <div className="main-right-week">
           {data.forecast.forecastday.map((item, index) => {
-            console.log(index + " ... " + item.day.condition.code)
             return (
               <div key={index}>
                 <div className="main-right-week-day" key={index}>
