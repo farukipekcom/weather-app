@@ -17,7 +17,7 @@ useEffect(() => {
   const [hourWeather, setHourWeather] = useState([]);
   useEffect(() => {
     const fetchItems = async () => {
-      const result = await axios(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=charlotte&days=5&aqi=no&alerts=no`);
+      const result = await axios(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=istanbul&days=5&aqi=no&alerts=no`);
       setData(result.data);
       setIsLoading(true);
     };
@@ -32,7 +32,7 @@ useEffect(() => {
     currentHour + 5
   );
   useEffect( () => {
-      isLoading && hourly(dailyCondition,setHourWeather);
+      isLoading && hourly(data, dailyCondition, setHourWeather);
   },[isLoading]);
   return (
     <>{isLoading && <div className="main">

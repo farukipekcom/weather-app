@@ -1,4 +1,4 @@
-export const hourly = (dailyCondition, setHourWeather) => {
+export const hourly = (data, dailyCondition, setHourWeather) => {
   return dailyCondition.length === 4
     ? setHourWeather([...dailyCondition])
     : dailyCondition.length === 3
