@@ -1,6 +1,5 @@
 import format from "date-fns/format";
 import Moment from "react-moment";
-import moment from 'moment';
 import { useEffect, useState } from "react";
 import condition from "./components/condition";
 import hourly from "./components/hourly";
@@ -18,7 +17,7 @@ useEffect(() => {
   const [hourWeather, setHourWeather] = useState([]);
   useEffect(() => {
     const fetchItems = async () => {
-      const result = await axios(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=istanbul&days=5&aqi=no&alerts=no`);
+      const result = await axios(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=charlotte&days=5&aqi=no&alerts=no`);
       setData(result.data);
       setIsLoading(true);
     };
@@ -27,6 +26,7 @@ useEffect(() => {
   const currentHour = isLoading &&  Number.parseInt(
     format(new Date(data.location.localtime), "H")
   );
+  // Check getHour()
   const dailyCondition = isLoading && data.forecast.forecastday[0].hour.slice(
     currentHour + 1,
     currentHour + 5
@@ -34,7 +34,6 @@ useEffect(() => {
   useEffect( () => {
       isLoading && hourly(dailyCondition,setHourWeather);
   },[isLoading]);
-
   return (
     <>{isLoading && <div className="main">
       <div className="main-left">
@@ -57,7 +56,7 @@ useEffect(() => {
           </div>
         </div>
         <div className="main-left-center">
-          <div className="main-left-center-degree">{data.current.temp_c}</div>
+          <div className="main-left-center-degree">{data.current.temp_c.toFixed()}</div>
           <div className="main-left-center-mark">°</div>
         </div>
         <div className="main-left-footer">
@@ -132,7 +131,7 @@ useEffect(() => {
                       <img src={condition(item.condition.code)} alt={item.condition.text} title={item.condition.text} />
                     </div>
                     <div className="main-right-today-hours-hour-degree">
-                      {Number.parseInt(item.temp_c)}°
+                      {item.temp_c.toFixed()}°
                     </div>
                   </div>
                 );
@@ -153,8 +152,8 @@ useEffect(() => {
                     </div>
                   </div>
                   <div className="main-right-week-day-degree">
-                    {Number.parseInt(item.day.mintemp_c)}° /{" "}
-                    {Number.parseInt(item.day.maxtemp_c)}°
+                    {item.day.mintemp_c.toFixed()}° /{" "}
+                    {item.day.maxtemp_c.toFixed()}°
                   </div>
                   <div className="main-right-week-day-icon">
                     <img src={condition(item.day.condition.code)} alt={item.day.condition.text} title={item.day.condition.text} />
@@ -200,21 +199,3 @@ useEffect(() => {
     }</>
   );
 }
-// export async function getStaticProps() {
-//   const res = await fetch(
-//     `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=charlotte&days=5&aqi=no&alerts=no`
-//   );
-//   const data = await res.json();
-//   return {
-//     props: {
-//       data,
-//     },
-//   };
-// }
-// export async function getServerSideProps() {
-//   const res = await fetch(
-//     `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=charlotte&days=5&aqi=no&alerts=no`
-//   );
-//   const data = await res.json()
-//   return { props: { data } }
-// }
