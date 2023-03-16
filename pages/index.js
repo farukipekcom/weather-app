@@ -1,31 +1,48 @@
 import format from "date-fns/format";
 import Moment from "react-moment";
+import moment from 'moment';
 import { useEffect, useState } from "react";
 import condition from "./components/condition";
-import hourly from './components/hourly';
-export default function Home({ data }) {
-  // console.log(data);
-  const date = format(new Date(data.location.localtime), "MMMM dd, yyyy");
-  const time = format(new Date(data.location.localtime), "HH:mm a");
-  const currentHour = Number.parseInt(
+import hourly from "./components/hourly";
+import axios from "axios";
+export default function Home() {
+var [date,setDate] = useState(new Date());
+useEffect(() => {
+    const timer = setInterval(()=>setDate((new Date())), 60000 )
+    return function cleanup() {
+        clearInterval(timer)
+    }
+},[setDate]);
+  const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState();
+  const [hourWeather, setHourWeather] = useState([]);
+  useEffect(() => {
+    const fetchItems = async () => {
+      const result = await axios(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=istanbul&days=5&aqi=no&alerts=no`);
+      setData(result.data);
+      setIsLoading(true);
+    };
+    fetchItems();
+  }, []);
+  const currentHour = isLoading &&  Number.parseInt(
     format(new Date(data.location.localtime), "H")
   );
-  const dailyCondition = data.forecast.forecastday[0].hour.slice(
+  const dailyCondition = isLoading && data.forecast.forecastday[0].hour.slice(
     currentHour + 1,
     currentHour + 5
   );
-  const [hourWeather, setHourWeather] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  useEffect(() => {
-    hourly(dailyCondition,setHourWeather);
-    setIsLoading(true);
-  }, []);
+  useEffect( () => {
+      isLoading && hourly(dailyCondition,setHourWeather);
+  },[isLoading]);
+
   return (
-    <div className="main">
+    <>{isLoading && <div className="main">
       <div className="main-left">
         <div className="main-left-header">
           <div className="main-left-header-left">
-            <div className="main-left-header-left-date">{date}</div>
+            <div className="main-left-header-left-date">
+            <Moment format="MMMM DD, yyyy">{data.location.localtime}</Moment>
+            </div>
             <div className="main-left-header-left-city">
               {data.location.name}
             </div>
@@ -34,7 +51,9 @@ export default function Home({ data }) {
             </div>
           </div>
           <div className="main-left-header-right">
-            <div className="main-left-header-right-time">{time}</div>
+            <div className="main-left-header-right-time">
+            <Moment format="hh:mm A">{date}</Moment>
+            </div>
           </div>
         </div>
         <div className="main-left-center">
@@ -110,7 +129,7 @@ export default function Home({ data }) {
                       <Moment format="h A">{item.time}</Moment>
                     </div>
                     <div className="main-right-today-hours-hour-icon">
-                      <img src={condition(item.condition.code)} alt={item.condition.text} title={item.condition.text}  />
+                      <img src={condition(item.condition.code)} alt={item.condition.text} title={item.condition.text} />
                     </div>
                     <div className="main-right-today-hours-hour-degree">
                       {Number.parseInt(item.temp_c)}°
@@ -138,7 +157,7 @@ export default function Home({ data }) {
                     {Number.parseInt(item.day.maxtemp_c)}°
                   </div>
                   <div className="main-right-week-day-icon">
-                    <img src={condition(item.day.condition.code)} alt={item.day.condition.text}  title={item.day.condition.text} />
+                    <img src={condition(item.day.condition.code)} alt={item.day.condition.text} title={item.day.condition.text} />
                   </div>
                 </div>
               </div>
@@ -178,16 +197,24 @@ export default function Home({ data }) {
         </div>
       </div>
     </div>
+    }</>
   );
 }
-export async function getStaticProps() {
-  const res = await fetch(
-    `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=charlotte&days=5&aqi=no&alerts=no`
-  );
-  const data = await res.json();
-  return {
-    props: {
-      data,
-    },
-  };
-}
+// export async function getStaticProps() {
+//   const res = await fetch(
+//     `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=charlotte&days=5&aqi=no&alerts=no`
+//   );
+//   const data = await res.json();
+//   return {
+//     props: {
+//       data,
+//     },
+//   };
+// }
+// export async function getServerSideProps() {
+//   const res = await fetch(
+//     `https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=charlotte&days=5&aqi=no&alerts=no`
+//   );
+//   const data = await res.json()
+//   return { props: { data } }
+// }
