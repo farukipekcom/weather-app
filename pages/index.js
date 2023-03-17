@@ -5,35 +5,29 @@ import condition from "./components/condition";
 import hourly from "./components/hourly";
 import axios from "axios";
 export default function Home() {
-var [date,setDate] = useState(new Date());
-useEffect(() => {
-    const timer = setInterval(()=>setDate((new Date())), 60000 )
-    return function cleanup() {
-        clearInterval(timer)
-    }
-},[setDate]);
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState();
   const [hourWeather, setHourWeather] = useState([]);
   useEffect(() => {
     const fetchItems = async () => {
-      const result = await axios(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=istanbul&days=5&aqi=no&alerts=no`);
+      const result = await axios(`https://api.weatherapi.com/v1/forecast.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=CHARLOTTE&days=5&aqi=no&alerts=no`);
       setData(result.data);
       setIsLoading(true);
     };
     fetchItems();
+    
   }, []);
   const currentHour = isLoading &&  Number.parseInt(
     format(new Date(data.location.localtime), "H")
   );
-  // Check getHour()
-  const dailyCondition = isLoading && data.forecast.forecastday[0].hour.slice(
+  const dailyCondition = data?.forecast.forecastday[0].hour.slice(
     currentHour + 1,
     currentHour + 5
   );
-  useEffect( () => {
+  useEffect(() => {
       isLoading && hourly(data, dailyCondition, setHourWeather);
-  },[isLoading]);
+  }, [isLoading]);
+  console.log(data);
   return (
     <>{isLoading && <div className="main">
       <div className="main-left">
@@ -51,13 +45,15 @@ useEffect(() => {
           </div>
           <div className="main-left-header-right">
             <div className="main-left-header-right-time">
-            <Moment format="hh:mm A">{date}</Moment>
+            <Moment format="hh:mm A">{data.location.localtime}</Moment>
+            <span>Last updated</span>
             </div>
           </div>
         </div>
         <div className="main-left-center">
           <div className="main-left-center-degree">{data.current.temp_c.toFixed()}</div>
           <div className="main-left-center-mark">°</div>
+          <div className="main-left-center-status">{data.current.condition.text}</div>
         </div>
         <div className="main-left-footer">
           <div className="main-left-footer-list">

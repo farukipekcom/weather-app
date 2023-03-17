@@ -1,6 +1,6 @@
 body {
   color: black;
-  background-color: rgb(233, 233, 233);
+  background-color: #fafafa;
 }
 .main {
   width: 1280px;
@@ -41,15 +41,22 @@ body {
       }
       &-right {
         &-time {
+          text-align:center;
           font-weight: 600;
           font-size: 32px;
-          line-height: 39px;
+          span {
+            display:block;
+            font-size:12px;
+            font-weight: 500;
+            color:#6d6d6d;
+          }
         }
       }
     }
     &-center {
       position: relative;
       margin-bottom: 28px;
+      text-align: center;
       &-degree {
         font-weight: 700;
         font-size: 200px;
@@ -62,6 +69,11 @@ body {
         font-weight: 700;
         font-size: 200px;
         line-height: 242px;
+      }
+      &-status{
+        font-weight: 600;
+font-size: 24px;
+line-height: 29px;
       }
     }
     &-footer {
