@@ -154,6 +154,8 @@ line-height: 29px;
             line-height: 19px;
           }
           &-icon {
+            display: flex;
+            align-items: center;
             img{
               width: 24px;
             }

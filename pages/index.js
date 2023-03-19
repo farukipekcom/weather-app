@@ -79,7 +79,7 @@ export default function Home() {
                   Humidity
                 </div>
                 <div className="main-left-footer-list-item-details-value">
-                  {data.current.humidity} %
+                  {data.current.humidity}%
                 </div>
               </div>
             </div>
@@ -92,7 +92,7 @@ export default function Home() {
                   Rain Chance
                 </div>
                 <div className="main-left-footer-list-item-details-value">
-                  {data.forecast.forecastday[0].day.daily_chance_of_rain} %
+                  {data.forecast.forecastday[0].day.daily_chance_of_rain}%
                 </div>
               </div>
             </div>
@@ -125,7 +125,7 @@ export default function Home() {
                     </div>
                     <div className="main-right-today-hours-hour-icon">
                       <img src={condition(item.condition.code)} alt={item.condition.text} title={item.condition.text} />
-                    </div>
+                    </div> 
                     <div className="main-right-today-hours-hour-degree">
                       {item.temp_c.toFixed()}°
                     </div>
