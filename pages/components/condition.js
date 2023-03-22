@@ -24,19 +24,19 @@ export const condition = (value) => {
     : value === 1117
     ? "/condition-icons/Blizzard.svg"
     : value === 1135
-    ? "/condition-icons/Fog.svg"
+    ? "/condition-icons/Mist.svg"
     : value === 1147
-    ? "/condition-icons/Freezing-fog.svg"
+    ? "/condition-icons/Mist.svg"
     : value === 1150
     ? "/condition-icons/Patchy-light-drizzle.svg"
     : value === 1153
-    ? "/condition-icons/Light-drizzle.svg"
+    ? "/condition-icons/Moderate-rain.svg"
     : value === 1168
     ? "/condition-icons/Freezing-drizzle.svg"
     : value === 1171
     ? "/condition-icons/Heavy-freezing-drizzle.svg"
     : value === 1180
-    ? "/condition-icons/Patchy-light-rain.svg"
+    ? "/condition-icons/Light-rain.svg"
     : value === 1183
     ? "/condition-icons/Light-rain.svg"
     : value === 1186
@@ -70,9 +70,9 @@ export const condition = (value) => {
     : value === 1237
     ? "/condition-icons/Ice-pellets.svg"
     : value === 1240
-    ? "/condition-icons/Light-rain-shower.svg"
+    ? "/condition-icons/Light-rain.svg"
     : value === 1243
-    ? "/condition-icons/Moderate-or-heavy-rain-shower.svg"
+    ? "/condition-icons/Heavy-rain.svg"
     : value === 1246
     ? "/condition-icons/Torrential-rain-shower.svg"
     : value === 1249
@@ -97,4 +97,4 @@ export const condition = (value) => {
     ? "/condition-icons/Moderate-or-heavy-snow-with-thunder.svg"
     : "/condition-icons/soon.svg";
 };
-export default condition
+export default condition;
