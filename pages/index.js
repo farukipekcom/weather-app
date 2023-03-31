@@ -1,7 +1,6 @@
 import format from "date-fns/format";
 import Moment from "react-moment";
 import { useEffect, useState } from "react";
-import condition from "./components/condition";
 import hourly from "./components/hourly";
 import axios from "axios";
 export default function Home() {
