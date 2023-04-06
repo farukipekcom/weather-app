@@ -1,5 +1,5 @@
 <h2 >
-Weeather App
+Weather App
 </h2>
 
 ### ✨ [Demo](https://weather-app-farukipekcom.vercel.app/)
