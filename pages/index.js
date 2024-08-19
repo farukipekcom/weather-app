@@ -1,10 +1,12 @@
 import format from "date-fns/format";
 import Moment from "react-moment";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import hourly from "./components/hourly";
 import axios from "axios";
+import {ResponsiveLine} from "@nivo/line";
 export default function Home() {
   const [data, setData] = useState(null);
+  const [minmax, setMinMax] = useState();
   const [search, setSearch] = useState(null);
   const [city, setCity] = useState("antalya");
   const [suggest, setSuggest] = useState(undefined);
@@ -22,25 +24,19 @@ export default function Home() {
     fetchItems();
     setActive(false);
   }, [city]);
+
   useEffect(() => {
     const fetchItems = async () => {
-      const result = await axios(
-        `https://api.weatherapi.com/v1/search.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=${suggest}`
-      );
+      const result = await axios(`https://api.weatherapi.com/v1/search.json?key=${process.env.NEXT_PUBLIC_WEATHER_API}&q=${suggest}`);
       setSearch(result.data);
     };
     fetchItems();
   }, [suggest]);
-  const currentHour =
-    isLoading &&
-    Number.parseInt(format(new Date(data.location.localtime), "H"));
-  const dailyCondition = data?.forecast.forecastday[0].hour.slice(
-    currentHour + 1,
-    currentHour + 5
-  );
+  const currentHour = isLoading && Number.parseInt(format(new Date(data.location.localtime), "H"));
+  const dailyCondition = data?.forecast.forecastday[0].hour.slice(currentHour + 1, currentHour + 5);
   useEffect(() => {
     isLoading && hourly(data, dailyCondition, setHourWeather);
-  }, [isLoading, city]);
+  }, [isLoading, city, data]);
   const onClick = (name) => {
     setCity(name);
   };
@@ -52,6 +48,70 @@ export default function Home() {
       setSuggest(e.target.value);
     }
   };
+
+  const combinedArray = [];
+  const dataTemp2 = [];
+  const dataHour2 = [];
+  let dongu = 0;
+  let fark = (24 - currentHour) % 3;
+  if (fark < 3) {
+    for (let x = 0, i = currentHour; i < 24; x++, i = i + 3) {
+      dataHour2.push(Number.parseInt(format(new Date(data?.forecast.forecastday[0].hour[i].time), "H")));
+      dataTemp2.push(Number.parseInt(data?.forecast.forecastday[0].hour[i].temp_c));
+      dongu = dongu + 1;
+    }
+    if (fark === 0) {
+      for (let i = 0; i < (8 - dongu) * 3; i = i + 3) {
+        dataHour2.push(i);
+        dataTemp2.push(Number.parseInt(data?.forecast.forecastday[1].hour[i].temp_c));
+      }
+    } else {
+      for (let i = 3 - fark; i < (8 - dongu) * 3; i = i + 3) {
+        dataHour2.push(i);
+        dataTemp2.push(Number.parseInt(data?.forecast.forecastday[1].hour[i].temp_c));
+      }
+    }
+  } else {
+    if (24 - currentHour <= 2) {
+      for (let x = 0, i = currentHour; i < 24; x++, i = i + 3) {
+        dataHour2.push(
+          Number.parseInt(format(new Date(data?.forecast.forecastday[1].hour[i].time), "H")) +
+            format(new Date(data?.forecast.forecastday[0].hour[1].time), "a")
+        );
+        dataTemp2.push(Number.parseInt(data?.forecast.forecastday[1].hour[i].temp_c));
+      }
+    }
+  }
+
+  for (var xyz = 0, i = 0; i < dataHour2.length; i++, xyz++) {
+    combinedArray[xyz] = {x: dataHour2[i], y: dataTemp2[i]};
+  }
+  const deneme = [
+    {
+      id: "Graph",
+      data: [
+        {
+          x: 1,
+          y: 20,
+        },
+        {
+          x: 2,
+          y: 15,
+        },
+      ],
+    },
+  ];
+  const xdeneme = [
+    {
+      id: "fake corp. A",
+      data: combinedArray,
+    },
+  ];
+  const bak = [];
+  isLoading &&
+    xdeneme[0].data.map((item) => {
+      return bak.push(item.y);
+    });
   return (
     <>
       {isLoading && (
@@ -60,9 +120,7 @@ export default function Home() {
             <div className="main-left-header">
               <div className="main-left-header-left">
                 <div className="main-left-header-left-date">
-                  <Moment format="MMMM DD, yyyy">
-                    {data.location.localtime}
-                  </Moment>
+                  <Moment format="MMMM DD, yyyy">{data.location.localtime}</Moment>
                 </div>
                 <div className="main-left-header-left-city">
                   {data.location.name}
@@ -72,12 +130,7 @@ export default function Home() {
                     </span>
                     {active && (
                       <div class="sorgu">
-                        <input
-                          type="text"
-                          name="text"
-                          placeholder="Search for city"
-                          onChange={(e) => onChange(e)}
-                        />
+                        <input type="text" name="text" placeholder="Search for city" onChange={(e) => onChange(e)} />
                         <img
                           src="/close.svg"
                           alt=""
@@ -94,8 +147,7 @@ export default function Home() {
                                 onClick={() => {
                                   onClick(item.name);
                                   setSearch(null);
-                                }}
-                              >
+                                }}>
                                 {item.name + ", "}
                                 <span className="country">{item.country}</span>
                               </div>
@@ -107,9 +159,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="main-left-header-left-country">
-                  {data.location.region === data.location.name
-                    ? ""
-                    : data.location.region + ", "}
+                  {data.location.region === data.location.name ? "" : data.location.region + ", "}
                   {data.location.country}
                 </div>
               </div>
@@ -121,13 +171,9 @@ export default function Home() {
               </div>
             </div>
             <div className="main-left-center">
-              <div className="main-left-center-degree">
-                {data.current.temp_c.toFixed()}
-              </div>
+              <div className="main-left-center-degree">{data.current.temp_c.toFixed()}</div>
               <div className="main-left-center-mark">°</div>
-              <div className="main-left-center-status">
-                {data.current.condition.text}
-              </div>
+              <div className="main-left-center-status">{data.current.condition.text}</div>
             </div>
             <div className="main-left-footer">
               <div className="main-left-footer-list">
@@ -136,12 +182,8 @@ export default function Home() {
                     <img src="wind.svg" alt="Wind" />
                   </div>
                   <div className="main-left-footer-list-item-details">
-                    <div className="main-left-footer-list-item-details-heading">
-                      Wind
-                    </div>
-                    <div className="main-left-footer-list-item-details-value">
-                      {data.current.wind_kph} km/h
-                    </div>
+                    <div className="main-left-footer-list-item-details-heading">Wind</div>
+                    <div className="main-left-footer-list-item-details-value">{data.current.wind_kph} km/h</div>
                   </div>
                 </div>
                 <div className="main-left-footer-list-item">
@@ -149,12 +191,8 @@ export default function Home() {
                     <img src="humidity.svg" alt="Humidity" />
                   </div>
                   <div className="main-left-footer-list-item-details">
-                    <div className="main-left-footer-list-item-details-heading">
-                      Humidity
-                    </div>
-                    <div className="main-left-footer-list-item-details-value">
-                      {data.current.humidity}%
-                    </div>
+                    <div className="main-left-footer-list-item-details-heading">Humidity</div>
+                    <div className="main-left-footer-list-item-details-value">{data.current.humidity}%</div>
                   </div>
                 </div>
                 <div className="main-left-footer-list-item">
@@ -162,12 +200,8 @@ export default function Home() {
                     <img src="rain.svg" alt="Humidity" />
                   </div>
                   <div className="main-left-footer-list-item-details">
-                    <div className="main-left-footer-list-item-details-heading">
-                      Rain Chance
-                    </div>
-                    <div className="main-left-footer-list-item-details-value">
-                      {data.forecast.forecastday[0].day.daily_chance_of_rain}%
-                    </div>
+                    <div className="main-left-footer-list-item-details-heading">Rain Chance</div>
+                    <div className="main-left-footer-list-item-details-value">{data.forecast.forecastday[0].day.daily_chance_of_rain}%</div>
                   </div>
                 </div>
                 <div className="main-left-footer-list-item">
@@ -175,12 +209,8 @@ export default function Home() {
                     <img src="uv.svg" alt="Humidity" />
                   </div>
                   <div className="main-left-footer-list-item-details">
-                    <div className="main-left-footer-list-item-details-heading">
-                      UV Index
-                    </div>
-                    <div className="main-left-footer-list-item-details-value">
-                      {data.current.uv}
-                    </div>
+                    <div className="main-left-footer-list-item-details-heading">UV Index</div>
+                    <div className="main-left-footer-list-item-details-value">{data.current.uv}</div>
                   </div>
                 </div>
               </div>
@@ -198,15 +228,9 @@ export default function Home() {
                           <Moment format="h A">{item.time}</Moment>
                         </div>
                         <div className="main-right-today-hours-hour-icon">
-                          <img
-                            src={"https:" + item.condition.icon}
-                            alt={item.condition.text}
-                            title={item.condition.text}
-                          />
+                          <img src={"http:" + item.condition.icon} alt={item.condition.text} title={item.condition.text} />
                         </div>
-                        <div className="main-right-today-hours-hour-degree">
-                          {item.temp_c.toFixed()}°
-                        </div>
+                        <div className="main-right-today-hours-hour-degree">{item.temp_c.toFixed()}°</div>
                       </div>
                     );
                   })}
@@ -226,20 +250,58 @@ export default function Home() {
                         </div>
                       </div>
                       <div className="main-right-week-day-degree">
-                        {item.day.mintemp_c.toFixed()}° /{" "}
-                        {item.day.maxtemp_c.toFixed()}°
+                        {item.day.mintemp_c.toFixed()}° / {item.day.maxtemp_c.toFixed()}°
                       </div>
                       <div className="main-right-week-day-icon">
-                        <img
-                          src={"https:" + item.day.condition.icon}
-                          alt={item.day.condition.text}
-                          title={item.day.condition.text}
-                        />
+                        <img src={"http:" + item.day.condition.icon} alt={item.day.condition.text} title={item.day.condition.text} />
                       </div>
                     </div>
                   </div>
                 );
               })}
+            </div>
+            <div className="deneme">
+              <ResponsiveLine
+                curve="monotoneX"
+                data={xdeneme}
+                enableGridX={false}
+                enableGridY={false}
+                axisTop={null}
+                axisRight={null}
+                axisLeft={null}
+                lineWidth={4}
+                enableArea={true}
+                axisBottom={{
+                  orient: "bottom",
+                  tickSize: 5,
+                  tickPadding: 3,
+                  tickRotation: 0,
+                  legend: "transportation",
+                  legendOffset: 36,
+                  legendPosition: "middle",
+                }}
+                margin={{top: 10, right: 10, bottom: 20, left: 10}}
+                xScale={{type: "point"}}
+                yScale={{
+                  type: "linear",
+                  max: Math.max(...bak) + 3,
+                  min: Math.min(...bak) - 3,
+                  stacked: true,
+                  reverse: false,
+                }}
+                yFormat=" >-.2f"
+                pointSize={11}
+                colors={"#FBB401"}
+                pointBorderWidth={3}
+                pointBorderColor={{from: "serieColor", modifiers: []}}
+                enablePointLabel={true}
+                pointLabel="y"
+                pointLabelYOffset={-16}
+                enableCrosshair={false}
+                crosshairType="y"
+                useMesh={false}
+                legends={[]}
+              />
             </div>
             <div className="main-right-sun">
               <div className="main-right-sun-heading">Sunrise & Sunset</div>
@@ -249,12 +311,8 @@ export default function Home() {
                     <img src="sunrise.svg" alt="Sunrise" />
                   </div>
                   <div className="main-right-sun-item-details">
-                    <div className="main-right-sun-item-details-heading">
-                      Sunrise
-                    </div>
-                    <div className="main-right-sun-item-details-value">
-                      {data.forecast.forecastday[1].astro.sunrise}
-                    </div>
+                    <div className="main-right-sun-item-details-heading">Sunrise</div>
+                    <div className="main-right-sun-item-details-value">{data.forecast.forecastday[1].astro.sunrise}</div>
                   </div>
                 </div>
                 <div className="main-right-sun-item sunset">
@@ -262,12 +320,8 @@ export default function Home() {
                     <img src="sunset.svg" alt="Sunset" />
                   </div>
                   <div className="main-right-sun-item-details">
-                    <div className="main-right-sun-item-details-heading">
-                      Sunset
-                    </div>
-                    <div className="main-right-sun-item-details-value">
-                      {data.forecast.forecastday[1].astro.sunset}
-                    </div>
+                    <div className="main-right-sun-item-details-heading">Sunset</div>
+                    <div className="main-right-sun-item-details-value">{data.forecast.forecastday[1].astro.sunset}</div>
                   </div>
                 </div>
               </div>
