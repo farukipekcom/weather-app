@@ -222,13 +222,14 @@ export default function Home() {
               <div className="main-right-today-hours">
                 {isLoading &&
                   hourWeather.map((item, index) => {
+                    const icon = item.condition.icon.split("/");
                     return (
                       <div className="main-right-today-hours-hour" key={index}>
                         <div className="main-right-today-hours-hour-time">
                           <Moment format="h A">{item.time}</Moment>
                         </div>
                         <div className="main-right-today-hours-hour-icon">
-                          <img src={"http:" + item.condition.icon} alt={item.condition.text} title={item.condition.text} />
+                          <img src={`${icon[5]}/${icon[6]}`} alt={item.condition.text} title={item.condition.text} />
                         </div>
                         <div className="main-right-today-hours-hour-degree">{item.temp_c.toFixed()}°</div>
                       </div>
@@ -238,6 +239,7 @@ export default function Home() {
             </div>
             <div className="main-right-week">
               {data.forecast.forecastday.map((item, index) => {
+                const icon = item.day.condition.icon.split("/");
                 return (
                   <div key={index}>
                     <div className="main-right-week-day" key={index}>
@@ -253,7 +255,7 @@ export default function Home() {
                         {item.day.mintemp_c.toFixed()}° / {item.day.maxtemp_c.toFixed()}°
                       </div>
                       <div className="main-right-week-day-icon">
-                        <img src={"http:" + item.day.condition.icon} alt={item.day.condition.text} title={item.day.condition.text} />
+                        <img src={`${icon[5]}/${icon[6]}`} alt={item.day.condition.text} title={item.day.condition.text} />
                       </div>
                     </div>
                   </div>
