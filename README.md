@@ -1,6 +1,21 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h2 >
+Weather App
+</h2>
 
-## Getting Started
+This application enables users to look at detailed weather forecasts for the next three days in their desired cities.
+
+| Name               | API URL                                                                  |
+| ------------------ | -------------------------------------------------------------------- |
+| Weather Api|https://www.weatherapi.com/
+
+
+## ⭐️ [Demo](https://weather-app-farukipekcom.vercel.app/)
+
+<img width="1437" alt="Screenshot 2024-08-18 at 8 12 28 PM" src="https://github.com/user-attachments/assets/1d3792c3-9550-431c-971e-05f6c18b5e66">
+
+---
+
+## Install
 
 First, run the development server:
 
@@ -8,31 +23,24 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Author
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+👤 **Faruk İpek**
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+[![Facebook](https://github.com/user-attachments/assets/182cd4a2-34c4-4523-8975-e8885e9f1391)](https://www.facebook.com/farukipekcom/)&nbsp;&nbsp;
+[![LinkedIn](https://github.com/user-attachments/assets/e7c1e095-6cd5-41f8-a00b-cd36b8b6e58e)](https://www.linkedin.com/in/farukipekcom/)&nbsp;&nbsp;
+[![X](https://github.com/user-attachments/assets/834c448b-e702-4f7a-a98c-5fabbfa20b92)](https://www.x.com/farukipekcom/)&nbsp;&nbsp;
+[![Website](https://github.com/user-attachments/assets/3765f25a-10ae-43d9-971a-8955936f774e)](https://farukipek.com/)&nbsp;&nbsp;
+[![Email](https://github.com/user-attachments/assets/cc905871-fb21-40db-93d9-82840a8122c2)](mailto:faruk@farukipek.com)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## 🤝 Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/farukipekcom/weather-app/issues). You can also take a look at the [contributing guide](https://github.com/farukipekcom/weather-app/issues).
 
-## Learn More
+## Show your support
 
-To learn more about Next.js, take a look at the following resources:
+Give a ⭐️ if this project helped you!
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
